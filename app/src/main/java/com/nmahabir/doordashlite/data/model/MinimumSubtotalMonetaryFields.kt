@@ -13,7 +13,7 @@ class MinimumSubtotalMonetaryFields {
     var displayString: String? = null
     @SerializedName("unit_amount")
     @Expose
-    var unitAmount: Any? = null
+    var unitAmount: Int? = null
     @SerializedName("decimal_places")
     @Expose
     var decimalPlaces: Int? = null

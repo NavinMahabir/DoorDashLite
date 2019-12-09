@@ -3,14 +3,14 @@ package com.nmahabir.doordashlite.data.model
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-class RestaurantsResponse {
+class Restaurant {
 
     @SerializedName("is_time_surging")
     @Expose
     var isTimeSurging: Boolean? = null
     @SerializedName("max_order_size")
     @Expose
-    var maxOrderSize: Any? = null
+    var maxOrderSize: Int? = null
     @SerializedName("delivery_fee")
     @Expose
     var deliveryFee: Int? = null
@@ -67,7 +67,7 @@ class RestaurantsResponse {
     var extraSosDeliveryFee: Int? = null
     @SerializedName("yelp_rating")
     @Expose
-    var yelpRating: Int? = null
+    var yelpRating: Double? = null
     @SerializedName("cover_img_url")
     @Expose
     var coverImgUrl: String? = null
@@ -94,12 +94,11 @@ class RestaurantsResponse {
     var url: String? = null
     @SerializedName("service_rate")
     @Expose
-    var serviceRate: Int? = null
+    var serviceRate: Double? = null
     @SerializedName("promotion")
     @Expose
     var promotion: Any? = null
     @SerializedName("featured_category_description")
     @Expose
     var featuredCategoryDescription: Any? = null
-
 }

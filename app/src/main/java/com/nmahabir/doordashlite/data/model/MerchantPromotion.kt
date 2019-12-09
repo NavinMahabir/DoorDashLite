@@ -10,13 +10,13 @@ class MerchantPromotion {
     var minimumSubtotalMonetaryFields: MinimumSubtotalMonetaryFields? = null
     @SerializedName("delivery_fee")
     @Expose
-    var deliveryFee: Any? = null
+    var deliveryFee: Int? = null
     @SerializedName("delivery_fee_monetary_fields")
     @Expose
     var deliveryFeeMonetaryFields: DeliveryFeeMonetaryFields? = null
     @SerializedName("minimum_subtotal")
     @Expose
-    var minimumSubtotal: Any? = null
+    var minimumSubtotal: Int? = null
     @SerializedName("new_store_customers_only")
     @Expose
     var newStoreCustomersOnly: Boolean? = null
