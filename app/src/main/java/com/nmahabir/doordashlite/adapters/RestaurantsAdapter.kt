@@ -72,6 +72,7 @@ class RestaurantsAdapter(
             .into(holder.coverIv)
     }
 
+
     override fun getItemCount(): Int {
         return mRestaurants.size
     }
@@ -105,5 +106,9 @@ class RestaurantsAdapter(
                     updateRestaurants(restaurants)
                 }
             })
+    }
+
+    fun getRestaurants() : List<Restaurant> {
+        return mRestaurants
     }
 }

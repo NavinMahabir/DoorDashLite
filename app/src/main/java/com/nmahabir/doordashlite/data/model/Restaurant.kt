@@ -1,9 +1,11 @@
 package com.nmahabir.doordashlite.data.model
 
+import android.os.Parcel
+import android.os.Parcelable
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-class Restaurant {
+class Restaurant() : Parcelable {
 
     @SerializedName("is_time_surging")
     @Expose
@@ -101,4 +103,76 @@ class Restaurant {
     @SerializedName("featured_category_description")
     @Expose
     var featuredCategoryDescription: Any? = null
+
+    constructor(parcel: Parcel) : this() {
+        isTimeSurging = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
+        maxOrderSize = parcel.readValue(Int::class.java.classLoader) as? Int
+        deliveryFee = parcel.readValue(Int::class.java.classLoader) as? Int
+        maxCompositeScore = parcel.readValue(Int::class.java.classLoader) as? Int
+        id = parcel.readValue(Int::class.java.classLoader) as? Int
+        averageRating = parcel.readValue(Double::class.java.classLoader) as? Double
+        compositeScore = parcel.readValue(Int::class.java.classLoader) as? Int
+        statusType = parcel.readString()
+        isOnlyCatering = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
+        status = parcel.readString()
+        numberOfRatings = parcel.readValue(Int::class.java.classLoader) as? Int
+        asapTime = parcel.readValue(Int::class.java.classLoader) as? Int
+        description = parcel.readString()
+        tags = parcel.createStringArrayList()
+        yelpReviewCount = parcel.readValue(Int::class.java.classLoader) as? Int
+        businessId = parcel.readValue(Int::class.java.classLoader) as? Int
+        extraSosDeliveryFee = parcel.readValue(Int::class.java.classLoader) as? Int
+        yelpRating = parcel.readValue(Double::class.java.classLoader) as? Double
+        coverImgUrl = parcel.readString()
+        headerImgUrl = parcel.readString()
+        priceRange = parcel.readValue(Int::class.java.classLoader) as? Int
+        slug = parcel.readString()
+        name = parcel.readString()
+        isNewlyAdded = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
+        url = parcel.readString()
+        serviceRate = parcel.readValue(Double::class.java.classLoader) as? Double
+    }
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeValue(isTimeSurging)
+        parcel.writeValue(maxOrderSize)
+        parcel.writeValue(deliveryFee)
+        parcel.writeValue(maxCompositeScore)
+        parcel.writeValue(id)
+        parcel.writeValue(averageRating)
+        parcel.writeValue(compositeScore)
+        parcel.writeString(statusType)
+        parcel.writeValue(isOnlyCatering)
+        parcel.writeString(status)
+        parcel.writeValue(numberOfRatings)
+        parcel.writeValue(asapTime)
+        parcel.writeString(description)
+        parcel.writeStringList(tags)
+        parcel.writeValue(yelpReviewCount)
+        parcel.writeValue(businessId)
+        parcel.writeValue(extraSosDeliveryFee)
+        parcel.writeValue(yelpRating)
+        parcel.writeString(coverImgUrl)
+        parcel.writeString(headerImgUrl)
+        parcel.writeValue(priceRange)
+        parcel.writeString(slug)
+        parcel.writeString(name)
+        parcel.writeValue(isNewlyAdded)
+        parcel.writeString(url)
+        parcel.writeValue(serviceRate)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<Restaurant> {
+        override fun createFromParcel(parcel: Parcel): Restaurant {
+            return Restaurant(parcel)
+        }
+
+        override fun newArray(size: Int): Array<Restaurant?> {
+            return arrayOfNulls(size)
+        }
+    }
 }
