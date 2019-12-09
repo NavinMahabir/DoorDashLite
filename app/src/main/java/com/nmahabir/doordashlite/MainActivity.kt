@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import android.widget.Toast
 import com.nmahabir.doordashlite.adapters.RestaurantsAdapter
 import com.nmahabir.doordashlite.data.model.Restaurant
+import com.nmahabir.doordashlite.data.remote.ApiUtils
 
 
 class MainActivity : AppCompatActivity() {
@@ -36,7 +37,7 @@ class MainActivity : AppCompatActivity() {
 
         mAdapter = RestaurantsAdapter(restaurantData,this,  object : RestaurantsAdapter.RestaurantItemListener {
             override fun onPostClick(id: Int) {
-                Toast.makeText(this@MainActivity, "Post id is$id", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@MainActivity, "Post id is $id", Toast.LENGTH_SHORT).show()
             }
         })
 

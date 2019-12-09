@@ -91,11 +91,11 @@ class RestaurantsAdapter(
     }
 
     private fun fetchRestaurants() {
-        ApiUtils.getBackendService().getRestaurants().subscribeOn(Schedulers.io()).observeOn(
-            AndroidSchedulers.mainThread()
-        )
+        ApiUtils.getBackendService()
+            .getRestaurants()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
             .subscribe(object : Subscriber<List<Restaurant>>() {
-
                 override fun onCompleted() {
                 }
 
