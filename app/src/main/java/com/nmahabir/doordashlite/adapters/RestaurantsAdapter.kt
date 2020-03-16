@@ -1,37 +1,58 @@
 package com.nmahabir.doordashlite.adapters
 
-import androidx.recyclerview.widget.RecyclerView
 import android.content.Context
-import android.widget.TextView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.databinding.BindingAdapter
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.nmahabir.doordashlite.R
 import com.nmahabir.doordashlite.data.model.Restaurant
-import com.nmahabir.doordashlite.data.remote.ApiUtils
-import rx.Subscriber
-import rx.android.schedulers.AndroidSchedulers
-import rx.schedulers.Schedulers
+import com.nmahabir.doordashlite.databinding.ViewRestaurantBinding
 
+
+data class RestaurantData(
+    val title: String,
+    val imgCover: String,
+    val description: String,
+    val status: String
+) {
+    companion object {
+        @JvmStatic
+        @BindingAdapter("coverImage")
+        fun loadImage(view: ImageView?, imgUrl: String = "") {
+            if (view != null) {
+                Glide.with(view.context)
+                    .load(imgUrl)
+                    .centerCrop()
+                    .placeholder(R.drawable.doordash_logo)
+                    .error(R.drawable.doordash_logo)
+                    .into(view)
+            }
+        }
+    }
+}
 
 class RestaurantsAdapter(
     private var mRestaurants: List<Restaurant>,
     private var mContext: Context,
     private var mItemListener: RestaurantItemListener
 
-) : RecyclerView.Adapter<RestaurantsAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<RestaurantsAdapter.RestaurantViewHolder>() {
 
-    inner class ViewHolder(itemView: View, private var mItemListener: RestaurantItemListener) :
-        RecyclerView.ViewHolder(itemView), View.OnClickListener {
+    inner class RestaurantViewHolder(binding: ViewRestaurantBinding, private var mItemListener: RestaurantItemListener) :
+        RecyclerView.ViewHolder(binding.root), View.OnClickListener {
+        private var binding: ViewRestaurantBinding? = null
 
-        var titleTv: TextView = itemView.findViewById(R.id.txtName)
-        var coverIv: ImageView = itemView.findViewById(R.id.imgCover)
-        var descriptionTv: TextView = itemView.findViewById(R.id.txtDescription)
-        var statusTv: TextView = itemView.findViewById(R.id.txtStatus)
+        fun bind(obj: RestaurantData?) {
+            binding?.restaurant = obj!!
+            binding?.executePendingBindings()
+        }
 
         init {
+            this.binding = binding
             itemView.setOnClickListener(this)
         }
 
@@ -43,43 +64,31 @@ class RestaurantsAdapter(
         }
     }
 
-    init {
-        fetchRestaurants()
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RestaurantViewHolder {
 
         val context = parent.context
         val inflater = LayoutInflater.from(context)
+        val itemBinding: ViewRestaurantBinding = ViewRestaurantBinding.inflate(inflater, parent, false)
 
-        val postView = inflater.inflate(R.layout.view_restaurant, parent, false)
-
-        return ViewHolder(postView, mItemListener)
+        return RestaurantViewHolder(itemBinding, mItemListener)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: RestaurantViewHolder, position: Int) {
 
         val restaurant = mRestaurants[position]
-        holder.titleTv.text = restaurant.name
-        holder.statusTv.text = restaurant.status
-        holder.descriptionTv.text = restaurant.description
 
-        Glide.with(mContext)
-            .load(restaurant.coverImgUrl)
-            .centerCrop()
-            .placeholder(R.drawable.doordash_logo)
-            .error(R.drawable.doordash_logo)
-            .into(holder.coverIv)
+        val viewData = RestaurantData(
+            title = restaurant.name ?: "",
+            imgCover = restaurant.coverImgUrl?: "",
+            description = restaurant.description ?: "",
+            status = restaurant.status ?: "")
+
+        holder.bind(viewData)
     }
 
 
     override fun getItemCount(): Int {
         return mRestaurants.size
-    }
-
-    fun updateRestaurants(restaurants: List<Restaurant>) {
-        mRestaurants = restaurants
-        notifyDataSetChanged()
     }
 
     private fun getItem(adapterPosition: Int): Restaurant {
@@ -90,25 +99,13 @@ class RestaurantsAdapter(
         fun onPostClick(id: Int)
     }
 
-    private fun fetchRestaurants() {
-        ApiUtils.getBackendService()
-            .getRestaurants()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(object : Subscriber<List<Restaurant>>() {
-                override fun onCompleted() {
-                }
-
-                override fun onError(e: Throwable) {
-                }
-
-                override fun onNext(restaurants: List<Restaurant>) {
-                    updateRestaurants(restaurants)
-                }
-            })
-    }
-
     fun getRestaurants() : List<Restaurant> {
         return mRestaurants
     }
+
+    fun setRestaurants(restaurants: List<Restaurant>) {
+        mRestaurants = restaurants
+        notifyDataSetChanged()
+    }
+
 }
